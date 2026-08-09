@@ -207,13 +207,13 @@
     function playTrack() {
         audio.play().catch(function(e) { console.log('Ошибка:', e); });
         isPlaying = true;
-        playBtn.textContent = '⏪';
+        playBtn.textContent = '⏸️';
     }
 
     function pauseTrack() {
         audio.pause();
         isPlaying = false;
-        playBtn.textContent = '⏩';
+        playBtn.textContent = '▶️';
     }
 
     function togglePlay() {
