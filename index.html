@@ -1,0 +1,267 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Для тебя ☕</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #120c0a;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            color: #fff;
+        }
+        .card {
+            max-width: 400px;
+            width: 100%;
+            background: rgba(255,255,255,0.05);
+            padding: 30px 25px;
+            border-radius: 40px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.08);
+            text-align: center;
+        }
+        h1 {
+            font-size: 32px;
+            background: linear-gradient(135deg, #f5e6d3, #c49a6c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .sub {
+            opacity: 0.4;
+            font-size: 12px;
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+        }
+        .photo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin: 0 auto 20px;
+            border: 3px solid #c49a6c;
+            animation: pulse 2.5s infinite;
+        }
+        .photo img { width: 100%; height: 100%; object-fit: cover; }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        .track-name {
+            font-size: 22px;
+            font-weight: bold;
+            margin: 10px 0 4px;
+        }
+        .track-artist {
+            opacity: 0.5;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        .controls button {
+            background: #c49a6c;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 40px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #120c0a;
+            cursor: pointer;
+            margin: 0 5px;
+            transition: 0.15s;
+        }
+        .controls button:active { transform: scale(0.92); }
+        .controls .play-btn {
+            font-size: 28px;
+            padding: 10px 30px;
+        }
+        .time {
+            font-size: 12px;
+            opacity: 0.3;
+            margin: 8px 0;
+        }
+        .counter {
+            font-size: 12px;
+            opacity: 0.2;
+            margin-bottom: 15px;
+        }
+        .surprise-btn {
+            background: linear-gradient(135deg, #c49a6c, #8b6b4d);
+            border: none;
+            padding: 14px;
+            border-radius: 40px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #120c0a;
+            cursor: pointer;
+            width: 100%;
+            transition: 0.15s;
+        }
+        .surprise-btn:active { transform: scale(0.96); }
+        .compliment-box {
+            min-height: 44px;
+            margin-top: 16px;
+            padding: 10px;
+            border: 1px dashed rgba(255,255,255,0.06);
+            border-radius: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+        }
+        .compliment-box span {
+            background: rgba(255,255,255,0.05);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            animation: pop 0.3s ease;
+        }
+        @keyframes pop {
+            0% { transform: scale(0); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .footer {
+            opacity: 0.08;font-size: 10px;
+            margin-top: 20px;
+            letter-spacing: 2px;
+        }
+    </style>
+</head>
+<body>
+<div class="card">
+    <h1>для тебя</h1>
+    <div class="sub">кофейный плейлист</div>
+    <div class="photo">
+        <img src="photo1.jpg" id="photo" alt="фото">
+    </div>
+    <div class="track-name" id="trackName">Talk To Me</div>
+    <div class="track-artist" id="trackArtist">Molly Santana</div>
+    <div class="controls">
+        <button id="prevBtn">⏮</button>
+        <button class="play-btn" id="playBtn">▶️</button>
+        <button id="nextBtn">⏭</button>
+    </div>
+    <div class="time">
+        <span id="currentTime">0:00</span> / <span id="totalTime">0:00</span>
+    </div>
+    <div class="counter" id="trackCounter">1 / 4</div>
+    <button class="surprise-btn" id="surpriseBtn">✨ нажми, если я крутая ✨</button>
+    <div class="compliment-box" id="complimentBox">
+        <span>☕ жду твоего клика</span>
+    </div>
+    <div class="footer">сделано с теплом</div>
+</div>
+<script>
+    var playlist = [
+        { name: 'Talk To Me', artist: 'Molly Santana', file: 'track1.mp3', photo: 'photo1.jpg' },
+        { name: 'Трек 2', artist: 'Исполнитель 2', file: 'track2.mp3', photo: 'photo2.jpg' },
+        { name: 'Трек 3', artist: 'Исполнитель 3', file: 'track3.mp3', photo: 'photo3.jpg' },
+        { name: 'Трек 4', artist: 'Исполнитель 4', file: 'track4.mp3', photo: 'photo4.jpg' }
+    ];
+    var currentIndex = 0;
+    var isPlaying = false;
+    var audio = new Audio();
+
+    var trackName = document.getElementById('trackName');
+    var trackArtist = document.getElementById('trackArtist');
+    var trackCounter = document.getElementById('trackCounter');
+    var playBtn = document.getElementById('playBtn');
+    var prevBtn = document.getElementById('prevBtn');
+    var nextBtn = document.getElementById('nextBtn');
+    var photo = document.getElementById('photo');
+    var currentTimeEl = document.getElementById('currentTime');
+    var totalTimeEl = document.getElementById('totalTime');
+
+    function loadTrack(index) {
+        var track = playlist[index];
+        audio.pause();
+        audio = new Audio(track.file);
+        audio.volume = 0.8;
+        trackName.textContent = track.name;
+        trackArtist.textContent = track.artist;
+        trackCounter.textContent = (index + 1) + ' / ' + playlist.length;
+        photo.src = track.photo;
+        photo.onerror = function() {
+            this.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><circle cx="100" cy="100" r="100" fill="%23c49a6c33"/><text x="50" y="110" fill="%23c49a6c" font-size="40">☕</text></svg>';
+        };
+        currentTimeEl.textContent = '0:00';
+        totalTimeEl.textContent = '0:00';
+        isPlaying = false;
+        playBtn.textContent = '▶️';
+        audio.addEventListener('loadedmetadata', function() {
+            totalTimeEl.textContent = formatTime(audio.duration);
+        });
+        audio.addEventListener('timeupdate', function() {
+            currentTimeEl.textContent = formatTime(audio.currentTime);
+        });
+        audio.addEventListener('ended', function() {
+            nextTrack();
+        });
+    }
+
+    function playTrack() {
+        audio.play().catch(function(e) { console.log('Ошибка:', e); });
+        isPlaying = true;
+        playBtn.textContent = '⏸️';
+    }
+
+    function pauseTrack() {
+        audio.pause();
+        isPlaying = false;
+        playBtn.textContent = '▶️';
+    }
+
+    function togglePlay() {
+        if (isPlaying) { pauseTrack(); } else { playTrack(); }
+    }
+
+    function nextTrack() {
+        currentIndex = (currentIndex + 1) % playlist.length;
+        loadTrack(currentIndex);
+        if (isPlaying) playTrack();
+    }
+
+    function prevTrack() {
+        currentIndex = (currentIndex - 1 + playlist.length) % playlist.length;
+        loadTrack(currentIndex);
+        if (isPlaying) playTrack();
+    }function formatTime(seconds) {
+        if (isNaN(seconds) || seconds === Infinity) return '0:00';
+        var mins = Math.floor(seconds / 60);
+        var secs = Math.floor(seconds % 60);
+        return mins + ':' + (secs < 10 ? '0' : '') + secs;
+    }
+
+    playBtn.addEventListener('click', function(e) { e.preventDefault(); togglePlay(); });
+    prevBtn.addEventListener('click', function(e) { e.preventDefault(); prevTrack(); });
+    nextBtn.addEventListener('click', function(e) { e.preventDefault(); nextTrack(); });
+
+    var surpriseBtn = document.getElementById('surpriseBtn');
+    var box = document.getElementById('complimentBox');
+    var messages = [
+        '☕ ты — как кофе утром',
+        '🌙 твоя улыбка — как звёзды',
+        '🔥 ты согреваешь как латте',
+        '✨ твоя энергия — космос',
+        '💫 с тобой время летит',
+        '🌸 ты — нежность в чашке',
+        '🧠 твой ум — ванильный раф',
+        '💅 твой стиль — чёрный бриллиант',
+        '💖 просто совершенство'
+    ];
+    surpriseBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        var shuffled = messages.sort(function() { return Math.random() - 0.5; });
+        var selected = shuffled.slice(0, 3);
+        box.innerHTML = selected.map(function(text) { return '<span>' + text + '</span>'; }).join('');
+    });
+
+    loadTrack(0);
+</script>
+</body>
+</html>
