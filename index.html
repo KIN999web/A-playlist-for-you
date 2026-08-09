@@ -135,7 +135,7 @@
 <body>
 <div class="card">
     <h1>для тебя</h1>
-    <div class="sub">кофейный плейлист</div>
+    <div class="sub">плейлист</div>
     <div class="photo">
         <img src="photo1.jpg" id="photo" alt="фото">
     </div>
@@ -150,7 +150,7 @@
         <span id="currentTime">0:00</span> / <span id="totalTime">0:00</span>
     </div>
     <div class="counter" id="trackCounter">1 / 4</div>
-    <button class="surprise-btn" id="surpriseBtn">✨ нажми, если я крутая ✨</button>
+    <button class="surprise-btn" id="surpriseBtn">✨ нажми ✨</button>
     <div class="compliment-box" id="complimentBox">
         <span>☕ жду твоего клика</span>
     </div>
@@ -159,9 +159,9 @@
 <script>
     var playlist = [
         { name: 'Talk To Me', artist: 'Molly Santana', file: 'track1.mp3', photo: 'photo1.jpg' },
-        { name: 'Трек 2', artist: 'Исполнитель 2', file: 'track2.mp3', photo: 'photo2.jpg' },
-        { name: 'Трек 3', artist: 'Исполнитель 3', file: 'track3.mp3', photo: 'photo3.jpg' },
-        { name: 'Трек 4', artist: 'Исполнитель 4', file: 'track4.mp3', photo: 'photo4.jpg' }
+        { name: 'Fuck love', artist: 'Xxxtentacion', file: 'track2.mp3', photo: 'photo2.jpg' },
+        { name: 'Demons', artist: 'ASAP Rocky', file: 'track3.mp3', photo: 'photo3.jpg' },
+        { name: 'Fell In Luv', artist: 'Playboi Carti', file: 'track4.mp3', photo: 'photo4.jpg' }
     ];
     var currentIndex = 0;
     var isPlaying = false;
@@ -207,13 +207,13 @@
     function playTrack() {
         audio.play().catch(function(e) { console.log('Ошибка:', e); });
         isPlaying = true;
-        playBtn.textContent = '⏸️';
+        playBtn.textContent = '⏪';
     }
 
     function pauseTrack() {
         audio.pause();
         isPlaying = false;
-        playBtn.textContent = '▶️';
+        playBtn.textContent = '⏩';
     }
 
     function togglePlay() {
