@@ -64,16 +64,37 @@
             margin-bottom: 15px;
         }
         .controls button {
-            background: #000000;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 40px;
-            font-size: 18px;
-            font-weight: bold;
-            color: #ffffff;
-            cursor: pointer;
-            margin: 0 5px;
-            transition: 0.15s;
+    background: #000000 !important;
+    border: none !important;
+    padding: 12px 20px;
+    border-radius: 40px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #ffffff !important;
+    cursor: pointer;
+    margin: 0 5px;
+    transition: 0.15s;
+    outline: none !important;
+    -webkit-tap-highlight-color: transparent !important;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    -webkit-appearance: none;
+    appearance: none;
+}
+.controls button:focus {
+    outline: none !important;
+    box-shadow: none !important;
+    background: #000000 !important;
+}
+.controls button:active {
+    transform: scale(0.92);
+    background: #1a1a1a !important;
+}
+.controls button:hover {
+    background: #000000 !important;
+}
         }
         .controls button:active { transform: scale(0.92); }
         .controls .play-btn {
